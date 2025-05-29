@@ -2,8 +2,10 @@ global:
   scrape_interval: 15s
 
 scrape_configs:
-  - job_name: 'minecraft' # Grafanaダッシュボードでの識別用など (例: minecraft_vanilla)
+  - job_name: 'minecraft'
     static_configs:
-      # mc-monitorがメトリクスを公開する実際のポートに合わせてください。
-      # 以前のログでは8080でした。mc-monitorのEXPORT_PORT環境変数で指定も可能です。
       - targets: ['mc-monitor:8080']
+
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']
