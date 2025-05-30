@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   nginx:
@@ -6,7 +6,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     networks:
       - home-network
     depends_on:
@@ -48,7 +48,6 @@ services:
     image: prom/prometheus
     volumes:
       - ./prometheus/config.yml:/etc/prometheus/prometheus.yml
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus-tsdb:/prometheus
     depends_on:
       - monitor
@@ -65,6 +64,10 @@ services:
       - ./dashboards:/etc/grafana/dashboards
     depends_on:
       - prometheus
+
+networks:
+  home-network:
+    driver: bridge
 
 volumes:
   mc-data: {}
