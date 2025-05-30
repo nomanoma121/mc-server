@@ -1,101 +1,72 @@
-# version: "3.8" # Docker Compose V2ではこの行は不要です
+version: '3'
 
 services:
-  mc-vanilla:
-    image: itzg/minecraft-server
-    container_name: mc-vanilla
-    environment:
-      EULA: "TRUE"
-      TYPE: "VANILLA"
-      VERSION: "LATEST" # または "1.20.4" など具体的なバージョン
-      MEMORY: "2G"    # 必要に応じて調整
-      ENABLE_RCON: "true"
-      RCON_PORT: "25575"
-      RCON_PASSWORD: "YourSecureRconPassword123" # 必ずご自身で強固なパスワードに変更
-      ENABLE_QUERY: "true"    # mc-monitor が情報を取得するために必要
-      QUERY_PORT: "25565"     # デフォルトのQueryポート
+  nginx:
+    image: nginx:latest
     ports:
-      - "25565:25565/tcp"     # Minecraftゲーム用ポート (TCP)
-      - "25565:25565/udp"     # Minecraftクエリ用ポート (UDP)
-      # - "25575:25575"       # RCONポート (外部からRCON接続する場合に公開)
+      - "80:80"
     volumes:
-      - mc_vanilla_data:/data
+      - ./nginx.conf:/etc/nginx/nginx.conf
     networks:
-      - mc_monitoring_net
+      - home-network
+    depends_on:
+      grafana:
+        condition: service_healthy
+      mc:
+        condition: service_healthy
     restart: always
-    healthcheck:
-      test: ["CMD", "mc-health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 120s      # サーバー起動までの猶予時間 (必要に応じて調整)
 
-  mc-monitor:
+  mc:
+    build:
+      context: ./mc
+      dockerfile: Dockerfile
+    tty: true
+    stdin_open: true
+    ports:
+      - "25565:25565"
+    networks:
+      - home-network
+    restart: always
+
+  monitor:
     image: itzg/mc-monitor
-    container_name: mc-monitor
     command: export-for-prometheus
     environment:
-      EXPORT_SERVERS: "mc-vanilla:25565" # 監視対象サーバー
-      # EXPORT_PORT: "8080" # mc-monitor のログで確認した実際のポート。
-                           # 設定しない場合、mc-monitor のデフォルトに依存します。
-                           # 以前のログでは8080でした。
-      DEBUG: "true"        # トラブルシューティング用に詳細ログを出す場合 (安定したら false に)
+      EXPORT_SERVERS: mc
+      DEBUG: "true"
     depends_on:
-      mc-vanilla:
-        condition: service_healthy
-    networks:
-      - mc_monitoring_net
-    restart: always
-    # Prometheusから内部アクセスのみなら外部公開不要
-
+      - mc
   cadvisor:
-    image: gcr.io/cadvisor/cadvisor:latest
-    container_name: cadvisor
-    ports:
-      - "8080:8080" # cAdvisorのUIおよびPrometheusエンドポイント
+    image: gcr.io/cadvisor/cadvisor:v0.47.1
     volumes:
       - /:/rootfs:ro
-      - /var/run:/var/run:ro
+      - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
-    networks:
-      - mc_monitoring_net
-    restart: always
 
   prometheus:
     image: prom/prometheus
-    container_name: prometheus
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml # この設定ファイルが別途必要
-      - prometheus_data:/prometheus
-    ports:
-      - "9090:9090" # Prometheus UI
-    networks:
-      - mc_monitoring_net
+      - ./prometheus/config.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-tsdb:/prometheus
     depends_on:
-      - mc-monitor
-    restart: always
+      - monitor
+    networks:
+      - home-network
 
   grafana:
     image: grafana/grafana-oss:latest
-    container_name: grafana
     ports:
-      - "80:3000" # Grafana UI
+      - "3000:3000"
     volumes:
-      - grafana_data:/var/lib/grafana # Grafanaのデータを永続化
-    environment:
-      GF_SECURITY_ADMIN_PASSWORD: "YourSecureGrafanaPassword123" # Grafanaの初回adminパスワード。必ず変更。
-    networks:
-      - mc_monitoring_net
+      - grafana-lib:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./dashboards:/etc/grafana/dashboards
     depends_on:
       - prometheus
-    restart: always
-
-networks:
-  mc_monitoring_net:
-    driver: bridge
 
 volumes:
-  mc_vanilla_data:
-  prometheus_data:
-  grafana_data: # Grafanaのボリューム定義
+  mc-data: {}
+  prometheus-tsdb: {}
+  grafana-lib: {}
