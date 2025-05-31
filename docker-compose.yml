@@ -61,8 +61,6 @@ services:
 
   grafana:
     image: grafana/grafana-oss:latest
-    ports:
-      - "3000:3000"
     volumes:
       - grafana-storage:/var/lib/grafana
       - ./grafana/dashboards:/etc/grafana/dashboards
