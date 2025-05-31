@@ -65,6 +65,7 @@ services:
       - "3000:3000"
     volumes:
       - grafana-storage:/var/lib/grafana
+      - ./grafana/dashboards:/etc/grafana/dashboards
     depends_on:
       - prometheus
     restart: always
