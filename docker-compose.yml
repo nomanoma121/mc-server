@@ -85,6 +85,9 @@ services:
       TYPE: velocity
       DEBUG: "true"
       ENABLE_RCON: "true"
+      PLUGINS: |
+        https://www.spigotmc.org/resources/advanced-portals.14356/download?version=574697
+
     ports:
       - "25565:25577"
     volumes:
