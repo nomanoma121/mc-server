@@ -33,7 +33,7 @@ services:
       - mc-data:/data
       - ./mc/whitelist.json:/data/whitelist.json:ro
       - ./mc/ops.json:/data/ops.json:ro
-      - ./mc/server.properties:/data/server.properties:ro
+      - ./mc/server.properties:/data/server.properties
       - ./mc/paper-global.yml:/config/paper-global.yml
     restart: always
 
