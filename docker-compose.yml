@@ -103,7 +103,8 @@ services:
       EULA: "TRUE"
       VERSION: "1.20.1"
       SYNC_SKIP_NEWER_IN_DESTINATION: "false"
-      PLUGINS: "MR:axTqSWQA" # Advanced Portals plugin
+      PLUGINS: |
+        https://cdn.modrinth.com/data/axTqSWQA/versions/I8wYnsdu/Advanced-Portals-Spigot-2.5.0.jar
     volumes:
       - ./mc-loby/paper-global.yml:/config/paper-global.yml
       - mc-loby-data:/data
