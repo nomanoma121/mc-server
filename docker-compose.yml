@@ -103,10 +103,10 @@ services:
       EULA: "TRUE"
       VERSION: "1.20.1"
       SYNC_SKIP_NEWER_IN_DESTINATION: "false"
-      PLUGINS: |
-        https://modrinth.com/plugin/advanced-portals/version/2.5.0-Spigot
+      PLUGINS: "MR:E2XN9jNs/xYJ2042O" # Advanced Portals plugin
     volumes:
       - ./mc-loby/paper-global.yml:/config/paper-global.yml
+      - mc-loby-data:/data
     networks:
       - home-network
     restart: always
@@ -119,3 +119,4 @@ volumes:
   mc-data:
   grafana-storage:
   prometheus-tsdb:
+  mc-loby-data:
