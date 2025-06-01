@@ -97,7 +97,11 @@ services:
     restart: always
 
   mc-loby:
-    image: itzg/minecraft-server
+    build:
+      context: ./mc-loby
+      dockerfile: Dockerfile
+    tty: true
+    stdin_open: true
     environment:
       TYPE: PAPER
       ONLINE_MODE: "false"
@@ -108,6 +112,9 @@ services:
         https://cdn.modrinth.com/data/axTqSWQA/versions/I8wYnsdu/Advanced-Portals-Spigot-2.5.0.jar
     volumes:
       - ./mc-loby/paper-global.yml:/config/paper-global.yml
+      - ./mc-loby/whitelist.json:/data/whitelist.json:ro
+      - ./mc-loby/ops.json:/data/ops.json:ro
+      - ./mc-loby/server.properties:/data/server.properties
       - mc-loby-data:/data
     networks:
       - home-network
