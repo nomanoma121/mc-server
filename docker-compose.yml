@@ -85,8 +85,6 @@ services:
       TYPE: velocity
       DEBUG: "true"
       ENABLE_RCON: "true"
-      PLUGINS: |
-        https://modrinth.com/plugin/advanced-portals/version/2.5.0-Spigot
 
     ports:
       - "25565:25577"
@@ -105,6 +103,8 @@ services:
       EULA: "TRUE"
       VERSION: "1.20.1"
       SYNC_SKIP_NEWER_IN_DESTINATION: "false"
+      PLUGINS: |
+        https://modrinth.com/plugin/advanced-portals/version/2.5.0-Spigot
     volumes:
       - ./mc-loby/paper-global.yml:/config/paper-global.yml
     networks:
