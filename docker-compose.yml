@@ -86,7 +86,7 @@ services:
       DEBUG: "true"
       ENABLE_RCON: "true"
       PLUGINS: |
-        https://www.spigotmc.org/resources/advanced-portals.14356/download?version=574697
+        https://modrinth.com/plugin/advanced-portals/version/2.5.0-Spigot
 
     ports:
       - "25565:25577"
