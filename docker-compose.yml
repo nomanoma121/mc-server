@@ -103,7 +103,7 @@ services:
       EULA: "TRUE"
       VERSION: "1.20.1"
       SYNC_SKIP_NEWER_IN_DESTINATION: "false"
-      PLUGINS: "MR:E2XN9jNs/xYJ2042O" # Advanced Portals plugin
+      PLUGINS: "MR:axTqSWQA" # Advanced Portals plugin
     volumes:
       - ./mc-loby/paper-global.yml:/config/paper-global.yml
       - mc-loby-data:/data
