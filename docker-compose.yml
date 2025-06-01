@@ -22,10 +22,19 @@ services:
       dockerfile: Dockerfile
     tty: true
     stdin_open: true
-    ports:
-      - "25565:25565"
+    environment:
+      TYPE: PAPER
+      EULA: "TRUE"
+      VERSION: "1.20.1"
+      MEMORY: "4G"
     networks:
       - home-network
+    volumes:
+      - mc-data:/data
+      - ./mc/whitelist.json:/data/whitelist.json:ro
+      - ./mc/ops.json:/data/ops.json:ro
+      - ./mc/server.properties:/data/server.properties:ro
+      - ./mc/paper-global.yml:/config/paper-global.yml
     restart: always
 
   monitor:
@@ -69,6 +78,35 @@ services:
     restart: always
     networks:
       - home-network
+
+  velocity:
+    image: itzg/bungeecord
+    environment:
+      TYPE: velocity
+      DEBUG: "true"
+      ENABLE_RCON: "true"
+    ports:
+      - "25565:25577"
+    volumes:
+      - ./velocity/velocity.toml:/config/velocity.toml:ro
+      - ./velocity/forwarding.secret:/config/forwarding.secret:ro
+    networks:
+      - home-network
+    restart: always
+
+  mc-loby:
+    image: itzg/minecraft-server
+    environment:
+      TYPE: PAPER
+      ONLINE_MODE: "false"
+      EULA: "TRUE"
+      VERSION: "1.20.1"
+      SYNC_SKIP_NEWER_IN_DESTINATION: "false"
+    volumes:
+      - ./mc-loby/paper-global.yml:/config/paper-global.yml
+    networks:
+      - home-network
+    restart: always
 
 networks:
   home-network:

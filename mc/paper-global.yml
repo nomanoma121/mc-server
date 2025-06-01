@@ -1,0 +1,16 @@
+# This is a basic Paper global configuration for Velocity support.
+# You may want to copy more settings from mc-loby/paper-global.yml or PaperMC's documentation.
+_version: 29 # Or the version corresponding to your PaperMC version
+
+proxies:
+  velocity:
+    enabled: true
+    online-mode: true # Should match Velocity's online-mode setting
+    secret: "YourGeneratedSecretStringHere" # IMPORTANT: This MUST match the content of velocity/forwarding.secret
+
+# Add other PaperMC specific configurations as needed.
+# For example, from your mc-loby/paper-global.yml:
+# messages:
+#   no-permission: <red>I'm sorry, but you do not have permission to perform this command. Please contact the server administrators if you believe that this is in error.
+
+# Ensure to check PaperMC documentation for all available options.
