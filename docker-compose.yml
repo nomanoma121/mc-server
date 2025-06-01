@@ -85,7 +85,8 @@ services:
       TYPE: velocity
       DEBUG: "true"
       ENABLE_RCON: "true"
-
+      PLUGINS: |
+        https://cdn.modrinth.com/data/axTqSWQA/versions/I8wYnsdu/Advanced-Portals-Velocity-2.5.0.jar
     ports:
       - "25565:25577"
     volumes:
