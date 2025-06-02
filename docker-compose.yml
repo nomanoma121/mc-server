@@ -115,7 +115,7 @@ services:
       - ./mc-loby/whitelist.json:/data/whitelist.json:ro
       - ./mc-loby/ops.json:/data/ops.json:ro
       - ./mc-loby/server.properties:/data/server.properties
-      - mc-loby-data:/data
+      - ./mc-loby/data:/data
     networks:
       - home-network
     restart: always
