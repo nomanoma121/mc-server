@@ -111,11 +111,11 @@ services:
       PLUGINS: |
         https://cdn.modrinth.com/data/axTqSWQA/versions/I8wYnsdu/Advanced-Portals-Spigot-2.5.0.jar
     volumes:
+      - ./mc-loby-data:/data
       - ./mc-loby/paper-global.yml:/config/paper-global.yml
       - ./mc-loby/whitelist.json:/data/whitelist.json:ro
       - ./mc-loby/ops.json:/data/ops.json:ro
       - ./mc-loby/server.properties:/data/server.properties
-      - ./mc-loby/data:/data
     networks:
       - home-network
     restart: always
