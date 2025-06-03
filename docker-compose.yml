@@ -27,6 +27,8 @@ services:
       EULA: "TRUE"
       VERSION: "1.20.1"
       MEMORY: "4G"
+      PLUGINS: |
+        https://cdn.modrinth.com/data/UmLGoGij/versions/MK210KrY/DiscordSRV-Build-1.29.0.jar
     networks:
       - home-network
     volumes:
@@ -110,6 +112,7 @@ services:
       SYNC_SKIP_NEWER_IN_DESTINATION: "false"
       PLUGINS: |
         https://cdn.modrinth.com/data/axTqSWQA/versions/I8wYnsdu/Advanced-Portals-Spigot-2.5.0.jar
+        https://cdn.modrinth.com/data/UmLGoGij/versions/MK210KrY/DiscordSRV-Build-1.29.0.jar
     volumes:
       - ./mc-loby/data:/data
       - ./mc-loby/paper-global.yml:/config/paper-global.yml
