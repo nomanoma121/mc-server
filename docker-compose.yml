@@ -125,6 +125,30 @@ services:
       - home-network
     restart: always
 
+    mc-large:
+      build:
+        context: ./mc-large
+        dockerfile: Dockerfile
+      tty: true
+      stdin_open: true
+      environment:
+        TYPE: PAPER
+        ONLINE_MODE: "false"
+        EULA: "TRUE"
+        VERSION: "1.20.1"
+        SYNC_SKIP_NEWER_IN_DESTINATION: "false"
+        PLUGINS: |
+          https://cdn.modrinth.com/data/UmLGoGij/versions/MK210KrY/DiscordSRV-Build-1.29.0.jar
+      volumes:
+        - ./mc-large/data:/data
+        - ./mc-large/paper-global.yml:/config/paper-global.yml
+        - ./mc-large/whitelist.json:/data/whitelist.json
+        - ./mc-large/ops.json:/data/ops.json
+        - ./mc-large/server.properties:/data/server.properties
+      networks:
+        - home-network
+      restart: always
+
 networks:
   home-network:
     driver: bridge
