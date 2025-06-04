@@ -29,7 +29,6 @@ services:
       MEMORY: "4G"
       PLUGINS: |
         https://cdn.modrinth.com/data/UmLGoGij/versions/MK210KrY/DiscordSRV-Build-1.29.0.jar
-      DISCORD_BOT_TOKEN: "${DISCORD_BOT_TOKEN}"
     networks:
       - home-network
     volumes:
@@ -40,7 +39,6 @@ services:
       - ./mc/paper-global.yml:/config/paper-global.yml
       - ./mc/discordsrv/synchronization.yml:/data/plugins/DiscordSRV/synchronization.yml
       - ./mc/discordsrv/config.yml:/data/plugins/DiscordSRV/config.yml
-      - ./scripts/configure_discord_token.sh:/docker-entrypoint-initscripts.d/99-configure_discord_token.sh
     restart: always
 
   monitor:
