@@ -145,6 +145,8 @@ services:
       - ./mc-large/whitelist.json:/data/whitelist.json
       - ./mc-large/ops.json:/data/ops.json
       - ./mc-large/server.properties:/data/server.properties
+      - ./mc-large/discordsrv/synchronization.yml:/data/plugins/DiscordSRV/synchronization.yml
+      - ./mc-large/discordsrv/config.yml:/data/plugins/DiscordSRV/config.yml
     networks:
       - home-network
     restart: always
