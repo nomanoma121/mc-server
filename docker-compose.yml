@@ -151,6 +151,17 @@ services:
       - home-network
     restart: always
 
+  crafty:
+    container_name: crafty_container
+    image: registry.gitlab.com/crafty-controller/crafty-4:latest
+    restart: always
+    volumes:
+      - ./docker/backups:/crafty/backups
+      - ./docker/logs:/crafty/logs
+      - ./docker/servers:/crafty/servers
+      - ./docker/config:/crafty/app/config
+      - ./docker/import:/crafty/import
+
 networks:
   home-network:
     driver: bridge
