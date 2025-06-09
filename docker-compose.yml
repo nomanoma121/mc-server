@@ -14,8 +14,6 @@ services:
     depends_on:
       grafana:
         condition: service_started
-      mc:
-        condition: service_healthy
     restart: always
 
   monitor:
