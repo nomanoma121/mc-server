@@ -69,6 +69,7 @@ services:
     image: filebrowser/filebrowser:latest
     volumes:
       - ./filebrowser:/srv
+    port: 8080
     networks:
       - home-network
     restart: always  
