@@ -18,31 +18,6 @@ services:
         condition: service_healthy
     restart: always
 
-  mc:
-    build:
-      context: ./mc
-      dockerfile: Dockerfile
-    tty: true
-    stdin_open: true
-    environment:
-      TYPE: PAPER
-      EULA: "TRUE"
-      VERSION: "1.20.1"
-      MEMORY: "4G"
-      PLUGINS: |
-        https://cdn.modrinth.com/data/UmLGoGij/versions/MK210KrY/DiscordSRV-Build-1.29.0.jar
-    networks:
-      - home-network
-    volumes:
-      - mc-data:/data
-      - ./mc/whitelist.json:/data/whitelist.json:ro
-      - ./mc/ops.json:/data/ops.json:ro
-      - ./mc/server.properties:/data/server.properties
-      - ./mc/paper-global.yml:/config/paper-global.yml
-      - ./mc/discordsrv/synchronization.yml:/data/plugins/DiscordSRV/synchronization.yml
-      - ./mc/discordsrv/config.yml:/data/plugins/DiscordSRV/config.yml
-    restart: always
-
   monitor:
     image: itzg/mc-monitor
     command: export-for-prometheus
@@ -85,74 +60,6 @@ services:
     networks:
       - home-network
 
-  velocity:
-    image: itzg/bungeecord
-    environment:
-      TYPE: velocity
-      DEBUG: "true"
-      ENABLE_RCON: "true"
-      PLUGINS: |
-        https://cdn.modrinth.com/data/axTqSWQA/versions/I8wYnsdu/Advanced-Portals-Spigot-2.5.0.jar
-    ports:
-      - "25565:25577"
-    volumes:
-      - ./velocity/velocity.toml:/config/velocity.toml:ro
-      - ./velocity/forwarding.secret:/config/forwarding.secret:ro
-    networks:
-      - home-network
-    restart: always
-
-  mc-loby:
-    build:
-      context: ./mc-loby
-      dockerfile: Dockerfile
-    tty: true
-    stdin_open: true
-    environment:
-      TYPE: PAPER
-      ONLINE_MODE: "false"
-      EULA: "TRUE"
-      VERSION: "1.20.1"
-      SYNC_SKIP_NEWER_IN_DESTINATION: "false"
-      PLUGINS: |
-        https://cdn.modrinth.com/data/axTqSWQA/versions/I8wYnsdu/Advanced-Portals-Spigot-2.5.0.jar
-        https://cdn.modrinth.com/data/UmLGoGij/versions/MK210KrY/DiscordSRV-Build-1.29.0.jar
-    volumes:
-      - ./mc-loby/data:/data
-      - ./mc-loby/paper-global.yml:/config/paper-global.yml
-      - ./mc-loby/whitelist.json:/data/whitelist.json
-      - ./mc-loby/ops.json:/data/ops.json
-      - ./mc-loby/server.properties:/data/server.properties
-    networks:
-      - home-network
-    restart: always
-
-  mc-large:
-    build:
-      context: ./mc-large
-      dockerfile: Dockerfile
-    tty: true
-    stdin_open: true
-    environment:
-      TYPE: PAPER
-      ONLINE_MODE: "false"
-      EULA: "TRUE"
-      VERSION: "1.20.1"
-      SYNC_SKIP_NEWER_IN_DESTINATION: "false"
-      PLUGINS: |
-        https://cdn.modrinth.com/data/UmLGoGij/versions/MK210KrY/DiscordSRV-Build-1.29.0.jar
-    volumes:
-      - ./mc-large/data:/data
-      - ./mc-large/paper-global.yml:/config/paper-global.yml
-      - ./mc-large/whitelist.json:/data/whitelist.json
-      - ./mc-large/ops.json:/data/ops.json
-      - ./mc-large/server.properties:/data/server.properties
-      - ./mc-large/discordsrv/synchronization.yml:/data/plugins/DiscordSRV/synchronization.yml
-      - ./mc-large/discordsrv/config.yml:/data/plugins/DiscordSRV/config.yml
-    networks:
-      - home-network
-    restart: always
-
   crafty:
     container_name: crafty_container
     image: registry.gitlab.com/crafty-controller/crafty-4:latest
@@ -166,12 +73,20 @@ services:
     networks:
       - home-network
 
+  portainer:
+    image: portainer/portainer-ce:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    networks:
+      - home-network
+    restart: always
+
 networks:
   home-network:
     driver: bridge
 
 volumes:
-  mc-data:
   grafana-storage:
   prometheus-tsdb:
-  mc-loby-data:
+  portainer_data:
