@@ -68,7 +68,8 @@ services:
   filebrowser:
     image: filebrowser/filebrowser:latest
     volumes:
-      - ./filebrowser:/srv
+      - /home/kouta:/srv
+      - ./filebrowser/filebrowser.db:/database/filebrowser.db
     networks:
       - home-network
     restart: always  
