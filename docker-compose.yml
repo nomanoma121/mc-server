@@ -70,6 +70,7 @@ services:
     volumes:
       - /home/kouta:/srv
       - ./filebrowser/filebrowser.db:/database/filebrowser.db
+      - ./filebrowser/settings.json:/config/settings.json
     networks:
       - home-network
     restart: always  
