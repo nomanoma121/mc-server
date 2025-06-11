@@ -73,9 +73,7 @@ enable-player-address-logging = true
 # Configure your servers here. Each key represents the server's name, and the value
 # represents the IP address of the server to connect to.
 
-lobby = "mc-loby:25565"
-survival = "mc:25565"
-medium="mc-large:25565"
+lobby = "loby:25565"
 
 # In what order we should try servers when a player logs in or is kicked from a server.
 try = [
