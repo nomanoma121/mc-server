@@ -86,10 +86,32 @@ services:
     ports:
       - "25565:25577"
     volumes:
-      - ./velocity/velocity.toml:/config/velocity.toml:ro
-      - ./velocity/forwarding.secret:/config/forwarding.secret:ro
+      - ./minecraft/velocity/velocity.toml:/config/velocity.toml:ro
+      - ./minecraft/velocity/forwarding.secret:/config/forwarding.secret:ro
+      - velocity-data:/data
     networks:
       - home-network
+    restart: always
+
+  loby:
+    build:
+      context: ./minecraft/loby
+      dockerfile: Dockerfile
+    tty: true
+    stdin_open: true
+    environment:
+      TYPE: PAPER
+      EULA: "TRUE"
+      VERSION: "1.20.1"
+      MEMORY: "4G"
+    networks:
+      - home-network
+    volumes:
+      - ./minecraft/loby/data:/data
+      - ./minecraft/loby/whitelist.json:/data/whitelist.json:ro
+      - ./minecraft/loby/ops.json:/data/ops.json:ro
+      - ./minecraft/loby/server.properties:/data/server.properties
+      - ./minecraft/loby/paper-global.yml:/config/paper-global.yml
     restart: always
 
 networks:
@@ -100,3 +122,4 @@ volumes:
   grafana-storage:
   prometheus-tsdb:
   portainer_data:
+  velocity-data:
