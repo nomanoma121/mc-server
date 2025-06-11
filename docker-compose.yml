@@ -79,7 +79,6 @@ services:
     environment:
       TYPE: velocity
       DEBUG: "true"
-      ENABLE_RCON: "true"
     ports:
       - "25565:25577"
     volumes:
