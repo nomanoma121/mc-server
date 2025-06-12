@@ -5,15 +5,10 @@ services:
       dockerfile: Dockerfile
     tty: true
     stdin_open: true
-    env_file:
-      - ./secrets/.env.mc-vanilla
-    ports:
-      - "25565:25565"
     volumes:
       - ./vanilla/server.properties:/data/server.properties
       - ./vanilla/ops.json:/data/ops.json
       - ./vanilla/whitelist.json:/data/whitelist.json
-      - ./vanilla/banned-players.json:/data/banned-players.json
     networks:
       - home-network
     restart: always
