@@ -1,0 +1,25 @@
+services:
+  vanilla:
+    build:
+      context: ./vanilla
+      dockerfile: Dockerfile
+    container_name: velocity-template-server
+    environment:
+      EULA: "true"
+      TYPE: "VELOCITY"
+      VERSION: "3.2.0"
+      MEMORY: "1G"
+    volumes:
+      - ./velocity/config:/data/config
+      - ./velocity/plugins:/data/plugins
+      - ./velocity/ops.json:/data/ops.json:ro
+      - ./velocity/server.properties:/data/server.properties
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+    networks:
+      - home-network
+
+networks:
+  home-network:
+    external: true

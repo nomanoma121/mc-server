@@ -1,0 +1,63 @@
+version: "3.8"
+
+services:
+  forge:
+    build:
+      context: ./forge
+      dockerfile: Dockerfile
+    container_name: forge-template-server
+    environment:
+      EULA: "true"
+      TYPE: "FORGE"
+      VERSION: "1.18.2"
+      MEMORY: "4G"
+    volumes:
+      - ./forge/world:/data/world
+      - ./forge/mods:/data/mods
+      - ./forge/config:/data/config
+      - ./forge/ops.json:/data/ops.json:ro
+      - ./forge/server.properties:/data/server.properties
+      - ./forge/whitelist.json:/data/whitelist.json:ro
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+
+  paper:
+    build:
+      context: ./paper
+      dockerfile: Dockerfile
+    container_name: paper-template-server
+    environment:
+      EULA: "true"
+      TYPE: "PAPER"
+      VERSION: "1.20.1"
+      MEMORY: "4G"
+    volumes:
+      - ./paper/world:/data/world
+      - ./paper/plugins:/data/plugins
+      - ./paper/ops.json:/data/ops.json:ro
+      - ./paper/paper-global.yml:/config/paper-global.yml
+      - ./paper/server.properties:/data/server.properties
+      - ./paper/whitelist.json:/data/whitelist.json:ro
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+
+  vanilla:
+    build:
+      context: ./vanilla
+      dockerfile: Dockerfile
+    container_name: vanilla-template-server
+    environment:
+      EULA: "true"
+      TYPE: "VANILLA"
+      VERSION: "1.20.1"
+      MEMORY: "2G"
+    volumes:
+      - ./vanilla/world:/data/world
+      - ./vanilla/ops.json:/data/ops.json:ro
+      - ./vanilla/server.properties:/data/server.properties
+      - ./vanilla/whitelist.json:/data/whitelist.json:ro
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
