@@ -112,7 +112,7 @@ services:
 
 networks:
   home-network:
-    driver: bridge
+    external: true
 
 volumes:
   grafana-storage:
