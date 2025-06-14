@@ -2,7 +2,7 @@ FROM itzg/minecraft-server
 
 ENV EULA="true"
 ENV RCON_ENABLED="true"
-ENV TYPE="PAPER"
+ENV TYPE="VANILLA"
 ENV VERSION="1.20.1"
 ENV TZ="Asia/Tokyo"
 ENV INIT_MEMORY="1G"

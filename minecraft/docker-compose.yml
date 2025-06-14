@@ -13,6 +13,22 @@ services:
       - home-network
     restart: always
 
+  large:
+    build:
+      context: ./large
+      dockerfile: Dockerfile
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./large/server.properties:/data/server.properties
+      - ./large/ops.json:/data/ops.json
+      - ./large/whitelist.json:/data/whitelist.json
+      - ./large/world:/data/world
+      - ./large/mods:/data/mods
+    networks:
+      - home-network
+    restart: always
+
 networks:
   home-network:
     external: true
