@@ -19,6 +19,8 @@ services:
       dockerfile: Dockerfile
     tty: true
     stdin_open: true
+    environment:
+      - VELOCITY_SECRET=${VELOCITY_SECRET}
     volumes:
       - ./large/server.properties:/data/server.properties
       - ./large/ops.json:/data/ops.json
