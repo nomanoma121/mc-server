@@ -1,18 +1,4 @@
 services:
-  mc-vanilla:
-    build:
-      context: ./vanilla
-      dockerfile: Dockerfile
-    tty: true
-    stdin_open: true
-    volumes:
-      - ./vanilla/server.properties:/data/server.properties
-      - ./vanilla/ops.json:/data/ops.json
-      - ./vanilla/whitelist.json:/data/whitelist.json
-    networks:
-      - home-network
-    restart: always
-
   forge: 
     build:
       context: ./forge
