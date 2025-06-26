@@ -89,9 +89,9 @@ services:
       - home-network
     restart: always
 
-  loby:
+  lobby:
     build:
-      context: ./minecraft/loby
+      context: ./minecraft/lobby
       dockerfile: Dockerfile
     tty: true
     stdin_open: true
@@ -103,11 +103,11 @@ services:
     networks:
       - home-network
     volumes:
-      - ./minecraft/loby/data:/data
-      - ./minecraft/loby/whitelist.json:/data/whitelist.json:ro
-      - ./minecraft/loby/ops.json:/data/ops.json:ro
-      - ./minecraft/loby/server.properties:/data/server.properties
-      - ./minecraft/loby/paper-global.yml:/config/paper-global.yml
+      - ./minecraft/lobby/data:/data
+      - ./minecraft/lobby/whitelist.json:/data/whitelist.json:ro
+      - ./minecraft/lobby/ops.json:/data/ops.json:ro
+      - ./minecraft/lobby/server.properties:/data/server.properties
+      - ./minecraft/lobby/paper-global.yml:/config/paper-global.yml
     restart: always
 
 networks:
