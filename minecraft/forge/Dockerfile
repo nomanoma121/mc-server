@@ -9,7 +9,7 @@ ENV VERSION="1.20.1"
 # (参考) Minecraftのバージョンを明示的に指定
 ENV MINECRAFT_VERSION="1.20.1"
 # 【修正点】Minecraft 1.20.1に対応する正しいForgeバージョンを指定
-ENV FORGE_VERSION="47.2.20"
+ENV FORGE_VERSION="47.4.0"
 # サーバーに割り当てるメモリ
 ENV MEMORY="4G"
 # タイムゾーンを東京に設定
