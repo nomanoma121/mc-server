@@ -82,8 +82,8 @@ services:
     ports:
       - "25565:25577"
     volumes:
-      - ./minecraft/velocity/velocity.toml:/config/velocity.toml:ro
-      - ./minecraft/velocity/forwarding.secret:/config/forwarding.secret:ro
+      - ./velocity/velocity.toml:/config/velocity.toml:ro
+      - ./velocity/forwarding.secret:/config/forwarding.secret:ro
       - velocity-data:/data
     networks:
       - home-network
