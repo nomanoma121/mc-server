@@ -1,12 +1,18 @@
+# ベースイメージ
 FROM itzg/minecraft-server
 
 # Forge サーバー用の環境変数設定
 ENV EULA="true"
 ENV TYPE="FORGE"
+# Minecraft本体のバージョン
 ENV VERSION="1.20.1"
+# (参考) Minecraftのバージョンを明示的に指定
 ENV MINECRAFT_VERSION="1.20.1"
-ENV FORGE_VERSION="40.2.0"
+# 【修正点】Minecraft 1.20.1に対応する正しいForgeバージョンを指定
+ENV FORGE_VERSION="47.2.20"
+# サーバーに割り当てるメモリ
 ENV MEMORY="4G"
+# タイムゾーンを東京に設定
 ENV TZ="Asia/Tokyo"
 
 # RCONを有効にする
