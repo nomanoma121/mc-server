@@ -13,20 +13,21 @@ services:
       - home-network
     restart: always
 
-  large:
+  forge: 
     build:
-      context: ./large
+      context: ./forge
       dockerfile: Dockerfile
     tty: true
     stdin_open: true
     environment:
       - VELOCITY_SECRET=${VELOCITY_SECRET}
     volumes:
-      - ./large/server.properties:/data/server.properties
-      - ./large/ops.json:/data/ops.json
-      - ./large/whitelist.json:/data/whitelist.json
-      - ./large/world:/data/world
-      - ./large/mods:/data/mods
+      - ./forge/server.properties:/data/server.properties
+      - ./forge/ops.json:/data/ops.json
+      - ./forge/whitelist.json:/data/whitelist.json
+      - ./forge/world:/data/world
+      - ./forge/mods:/data/mods
+      - ./forge/config:/data/config
     networks:
       - home-network
     restart: always
