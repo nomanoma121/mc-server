@@ -26,11 +26,12 @@ services:
     networks:
       - home-network
     environment:
-      - BACKUP_INTERVAL=6h
+      - BACKUP_INTERVAL=24h
       - INITIAL_DELAY=5m
       - RCON_HOST=forge
       - RCON_PASSWORD=minecraft
       - INCLUDES=world,mods,config
+      - PRUNE_BACKUPS_DAYS=7
     volumes:
       - ./forge/world:/data/world:ro
       - ./forge/mods:/data/mods:ro
