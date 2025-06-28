@@ -18,6 +18,26 @@ services:
       - home-network
     restart: always
 
+  forge-backup:
+    image: itzg/mc-backup
+    container_name: forge-backup-service
+    depends_on:
+      - forge
+    networks:
+      - home-network
+    environment:
+      - BACKUP_INTERVAL=6h
+      - INITIAL_DELAY=5m
+      - RCON_HOST=forge
+      - RCON_PASSWORD=minecraft
+      - INCLUDES=world,mods,config
+    volumes:
+      - ./forge/world:/data/world:ro
+      - ./forge/mods:/data/mods:ro
+      - ./forge/config:/data/config:ro
+      - ./backups/forge:/backups
+    restart: always
+
 networks:
   home-network:
     external: true
