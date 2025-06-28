@@ -37,7 +37,47 @@ services:
       - ./forge/mods:/data/mods:ro
       - ./forge/config:/data/config:ro
       - ./backups/forge:/backups
+    restart: no
+
+  large: 
+    build:
+      context: ./large
+      dockerfile: Dockerfile
+    tty: true
+    stdin_open: true
+    environment:
+      - VELOCITY_SECRET=${VELOCITY_SECRET}
+    volumes:
+      - ./large/server.properties:/data/server.properties
+      - ./large/ops.json:/data/ops.json
+      - ./large/whitelist.json:/data/whitelist.json
+      - ./large/world:/data/world
+      - ./large/mods:/data/mods
+      - ./large/config:/data/config
+    networks:
+      - home-network
     restart: always
+
+  large-backup:
+    image: itzg/mc-backup
+    container_name: large-backup-service
+    depends_on:
+      - large
+    networks:
+      - home-network
+    environment:
+      - BACKUP_INTERVAL=24h
+      - INITIAL_DELAY=5m
+      - RCON_HOST=large
+      - RCON_PASSWORD=minecraft
+      - INCLUDES=world,mods,config
+      - PRUNE_BACKUPS_DAYS=7
+    volumes:
+      - ./large/world:/data/world:ro
+      - ./large/mods:/data/mods:ro
+      - ./large/config:/data/config:ro
+      - ./backups/large:/backups
+    restart: no
 
 networks:
   home-network:
