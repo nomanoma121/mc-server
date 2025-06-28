@@ -103,7 +103,7 @@ services:
     networks:
       - home-network
     volumes:
-      - ./minecraft/lobby/data:/data
+      - ./minecraft/lobby/world:/data/world
       - ./minecraft/lobby/whitelist.json:/data/whitelist.json:ro
       - ./minecraft/lobby/ops.json:/data/ops.json:ro
       - ./minecraft/lobby/server.properties:/data/server.properties
