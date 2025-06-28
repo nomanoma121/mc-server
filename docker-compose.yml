@@ -95,12 +95,6 @@ services:
       dockerfile: Dockerfile
     tty: true
     stdin_open: true
-    environment:
-      TYPE: PAPER
-      EULA: "TRUE"
-      VERSION: "1.20.1"
-      MEMORY: "4G"
-      JAVA_VERSION: "17"
     networks:
       - home-network
     volumes:
