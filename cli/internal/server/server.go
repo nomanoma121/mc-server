@@ -4,8 +4,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/pelletier/go-toml/v2"
+	"gopkg.in/yaml.v3"
 )
 
 // Server は、管理用のJSONファイルに保存するサーバー情報の構造体です。
@@ -97,4 +99,221 @@ func AddVelocityServerConfig(tomlPath, serverName, address string) error {
 	}
 
 	return nil
+}
+
+// DockerComposeService represents a service in docker-compose.yml
+type DockerComposeService struct {
+	Build struct {
+		Context    string `yaml:"context"`
+		Dockerfile string `yaml:"dockerfile"`
+	} `yaml:"build,omitempty"`
+	Image         string      `yaml:"image,omitempty"`
+	ContainerName string      `yaml:"container_name,omitempty"`
+	Environment   interface{} `yaml:"environment,omitempty"` // 配列またはマップ形式に対応
+	Volumes       []string    `yaml:"volumes,omitempty"`
+	Networks      []string    `yaml:"networks,omitempty"`
+	Restart       string      `yaml:"restart,omitempty"`
+	TTY           bool        `yaml:"tty,omitempty"`
+	StdinOpen     bool        `yaml:"stdin_open,omitempty"`
+}
+
+// DockerCompose represents the structure of docker-compose.yml
+type DockerCompose struct {
+	Version  string                          `yaml:"version"`
+	Services map[string]DockerComposeService `yaml:"services"`
+	Networks map[string]interface{}          `yaml:"networks,omitempty"`
+	Volumes  map[string]interface{}          `yaml:"volumes,omitempty"`
+}
+
+// AddDockerComposeService adds a new Minecraft server service to docker-compose.yml
+func AddDockerComposeService(dockerComposePath, serverName, serverType string) error {
+	// Read existing docker-compose.yml
+	var compose DockerCompose
+
+	data, err := os.ReadFile(dockerComposePath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			// Create basic docker-compose.yml structure if it doesn't exist
+			compose = DockerCompose{
+				Version:  "3.8",
+				Services: make(map[string]DockerComposeService),
+				Networks: map[string]interface{}{
+					"home-network": map[string]interface{}{
+						"external": true,
+					},
+				},
+			}
+		} else {
+			return fmt.Errorf("docker-compose.ymlの読み込みに失敗しました: %w", err)
+		}
+	} else {
+		if err := yaml.Unmarshal(data, &compose); err != nil {
+			return fmt.Errorf("docker-compose.ymlのパースに失敗しました: %w", err)
+		}
+	}
+
+	// Ensure services map exists
+	if compose.Services == nil {
+		compose.Services = make(map[string]DockerComposeService)
+	}
+
+	// Create new service based on server type
+	var newService DockerComposeService
+	switch strings.ToLower(serverType) {
+	case "forge":
+		newService = DockerComposeService{
+			Build: struct {
+				Context    string `yaml:"context"`
+				Dockerfile string `yaml:"dockerfile"`
+			}{
+				Context:    fmt.Sprintf("./template/forge"),
+				Dockerfile: "Dockerfile",
+			},
+			ContainerName: fmt.Sprintf("minecraft-%s-server", serverName),
+			Environment: []string{
+				"EULA=true",
+				"TYPE=FORGE",
+				"VERSION=1.18.2",
+				"MEMORY=4G",
+			},
+			Volumes: []string{
+				fmt.Sprintf("./servers/%s/world:/data/world", serverName),
+				fmt.Sprintf("./servers/%s/mods:/data/mods", serverName),
+				fmt.Sprintf("./servers/%s/config:/data/config", serverName),
+				fmt.Sprintf("./servers/%s/ops.json:/data/ops.json", serverName),
+				fmt.Sprintf("./servers/%s/server.properties:/data/server.properties", serverName),
+				fmt.Sprintf("./servers/%s/whitelist.json:/data/whitelist.json", serverName),
+			},
+			Networks:  []string{"home-network"},
+			Restart:   "unless-stopped",
+			TTY:       true,
+			StdinOpen: true,
+		}
+	case "paper":
+		newService = DockerComposeService{
+			Build: struct {
+				Context    string `yaml:"context"`
+				Dockerfile string `yaml:"dockerfile"`
+			}{
+				Context:    fmt.Sprintf("./template/paper"),
+				Dockerfile: "Dockerfile",
+			},
+			ContainerName: fmt.Sprintf("minecraft-%s-server", serverName),
+			Environment: []string{
+				"EULA=true",
+				"TYPE=PAPER",
+				"VERSION=1.20.1",
+				"MEMORY=4G",
+			},
+			Volumes: []string{
+				fmt.Sprintf("./servers/%s/world:/data/world", serverName),
+				fmt.Sprintf("./servers/%s/plugins:/data/plugins", serverName),
+				fmt.Sprintf("./servers/%s/ops.json:/data/ops.json", serverName),
+				fmt.Sprintf("./servers/%s/paper-global.yml:/config/paper-global.yml", serverName),
+				fmt.Sprintf("./servers/%s/server.properties:/data/server.properties", serverName),
+				fmt.Sprintf("./servers/%s/whitelist.json:/data/whitelist.json", serverName),
+			},
+			Networks:  []string{"home-network"},
+			Restart:   "unless-stopped",
+			TTY:       true,
+			StdinOpen: true,
+		}
+	case "vanilla":
+		newService = DockerComposeService{
+			Build: struct {
+				Context    string `yaml:"context"`
+				Dockerfile string `yaml:"dockerfile"`
+			}{
+				Context:    fmt.Sprintf("./template/vanilla"),
+				Dockerfile: "Dockerfile",
+			},
+			ContainerName: fmt.Sprintf("minecraft-%s-server", serverName),
+			Environment: []string{
+				"EULA=true",
+				"TYPE=VANILLA",
+				"VERSION=1.20.1",
+				"MEMORY=2G",
+			},
+			Volumes: []string{
+				fmt.Sprintf("./servers/%s/world:/data/world", serverName),
+				fmt.Sprintf("./servers/%s/ops.json:/data/ops.json", serverName),
+				fmt.Sprintf("./servers/%s/server.properties:/data/server.properties", serverName),
+				fmt.Sprintf("./servers/%s/whitelist.json:/data/whitelist.json", serverName),
+			},
+			Networks:  []string{"home-network"},
+			Restart:   "unless-stopped",
+			TTY:       true,
+			StdinOpen: true,
+		}
+	default:
+		return fmt.Errorf("サポートされていないサーバータイプ: %s", serverType)
+	}
+
+	// Add new service to compose
+	compose.Services[serverName] = newService
+
+	// Marshal back to YAML
+	updatedData, err := yaml.Marshal(&compose)
+	if err != nil {
+		return fmt.Errorf("docker-compose.ymlのエンコードに失敗しました: %w", err)
+	}
+
+	// Write back to file
+	if err := os.WriteFile(dockerComposePath, updatedData, 0644); err != nil {
+		return fmt.Errorf("docker-compose.ymlの書き込みに失敗しました: %w", err)
+	}
+
+	return nil
+}
+
+// CreateServerDirectory creates the server directory structure and copies template files
+func CreateServerDirectory(serverName, serverType string) error {
+	serverDir := fmt.Sprintf("minecraft/servers/%s", serverName)
+	templateDir := fmt.Sprintf("minecraft/template/%s", serverType)
+
+	// Create server directory
+	if err := os.MkdirAll(serverDir, 0755); err != nil {
+		return fmt.Errorf("サーバーディレクトリの作成に失敗しました: %w", err)
+	}
+
+	// Create subdirectories based on server type
+	subdirs := []string{"world"}
+	switch strings.ToLower(serverType) {
+	case "forge":
+		subdirs = append(subdirs, "mods", "config")
+	case "paper":
+		subdirs = append(subdirs, "plugins")
+	}
+
+	for _, subdir := range subdirs {
+		if err := os.MkdirAll(fmt.Sprintf("%s/%s", serverDir, subdir), 0755); err != nil {
+			return fmt.Errorf("サブディレクトリ %s の作成に失敗しました: %w", subdir, err)
+		}
+	}
+
+	// Copy template files
+	templateFiles := []string{"ops.json", "whitelist.json", "server.properties"}
+	if strings.ToLower(serverType) == "paper" {
+		templateFiles = append(templateFiles, "paper-global.yml")
+	}
+
+	for _, file := range templateFiles {
+		src := fmt.Sprintf("%s/%s", templateDir, file)
+		dst := fmt.Sprintf("%s/%s", serverDir, file)
+
+		if err := copyFile(src, dst); err != nil {
+			return fmt.Errorf("テンプレートファイル %s のコピーに失敗しました: %w", file, err)
+		}
+	}
+
+	return nil
+}
+
+// copyFile copies a file from src to dst
+func copyFile(src, dst string) error {
+	data, err := os.ReadFile(src)
+	if err != nil {
+		return err
+	}
+	return os.WriteFile(dst, data, 0644)
 }
