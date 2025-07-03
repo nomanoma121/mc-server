@@ -88,6 +88,19 @@ services:
       - home-network
     restart: always
 
+  bot-velocity:
+    image: itzg/bungeecord
+    environment:
+      TYPE: velocity
+      DEBUG: "true"
+      BUNGEE_NAME: bot-velocity
+    volumes:
+      - ./bot-velocity/velocity.toml:/config/velocity.toml:ro
+      - ./bot-velocity/forwarding.secret:/config/forwarding.secret:ro
+    networks:
+      - home-network
+    restart: always
+
   lobby:
     build:
       context: ./minecraft/lobby
