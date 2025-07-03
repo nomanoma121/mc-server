@@ -83,6 +83,7 @@ services:
       - "25565:25577"
     volumes:
       - ./velocity/velocity.toml:/config/velocity.toml:ro
+      - ./velocity/forwarding.secret:/config/forwarding.secret:ro
     networks:
       - home-network
     restart: always
