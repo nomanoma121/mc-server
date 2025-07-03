@@ -99,8 +99,6 @@ services:
       - home-network
     volumes:
       - ./minecraft/lobby/world:/data/world
-      - ./minecraft/lobby/whitelist.json:/data/whitelist.json
-      - ./minecraft/lobby/ops.json:/data/ops.json
       - ./minecraft/lobby/server.properties:/data/server.properties
       - ./minecraft/lobby/paper-global.yml:/config/paper-global.yml
     restart: always

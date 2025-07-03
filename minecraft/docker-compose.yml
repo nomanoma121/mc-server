@@ -8,8 +8,6 @@ services:
             - VELOCITY_SECRET=${VELOCITY_SECRET}
         volumes:
             - ./forge/server.properties:/data/server.properties
-            - ./forge/ops.json:/data/ops.json
-            - ./forge/whitelist.json:/data/whitelist.json
             - ./forge/world:/data/world
             - ./forge/mods:/data/mods
             - ./forge/config:/data/config
@@ -26,8 +24,6 @@ services:
             - VELOCITY_SECRET=${VELOCITY_SECRET}
         volumes:
             - ./large/server.properties:/data/server.properties
-            - ./large/ops.json:/data/ops.json
-            - ./large/whitelist.json:/data/whitelist.json
             - ./large/world:/data/world
             - ./large/mods:/data/mods
             - ./large/config:/data/config

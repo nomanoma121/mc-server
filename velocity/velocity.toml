@@ -30,8 +30,6 @@ show-ping-requests = false
 tcp-fast-open = false
 
 [forced-hosts]
-'fuga.example.com' = ['fuga']
-'hoge.example.com' = ['hoge']
 localhost = ['lobby']
 
 [query]
