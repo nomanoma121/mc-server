@@ -83,8 +83,6 @@ services:
       - "25565:25577"
     volumes:
       - ./velocity/velocity.toml:/config/velocity.toml:ro
-      - ./velocity/forwarding.secret:/config/forwarding.secret:ro
-      - velocity-data:/data
     networks:
       - home-network
     restart: always
@@ -101,19 +99,7 @@ services:
       - ./minecraft/lobby/world:/data/world
       - ./minecraft/lobby/server.properties:/data/server.properties
       - ./minecraft/lobby/paper-global.yml:/config/paper-global.yml
-    restart: always
-
-  mariadb:
-    image: mariadb:latest
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: minecraft
-      MYSQL_USER: mcuser
-      MYSQL_PASSWORD: mcpassword
-    volumes:
-      - ./mariadb/data:/var/lib/mysql
-    networks:
-      - home-network
+      - ./minecraft/lobby/spigot.yml:/data/spigot.yml
     restart: always
 
 networks:
@@ -124,4 +110,3 @@ volumes:
   grafana-storage:
   prometheus-tsdb:
   portainer_data:
-  velocity-data:

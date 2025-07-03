@@ -4,8 +4,6 @@ services:
         build:
             context: ./forge
             dockerfile: Dockerfile
-        environment:
-            - VELOCITY_SECRET=${VELOCITY_SECRET}
         volumes:
             - ./forge/server.properties:/data/server.properties
             - ./forge/world:/data/world
@@ -20,8 +18,6 @@ services:
         build:
             context: ./large
             dockerfile: Dockerfile
-        environment:
-            - VELOCITY_SECRET=${VELOCITY_SECRET}
         volumes:
             - ./large/server.properties:/data/server.properties
             - ./large/world:/data/world
