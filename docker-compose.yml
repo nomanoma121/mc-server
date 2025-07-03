@@ -99,7 +99,6 @@ services:
     volumes:
       - ./minecraft/lobby/world:/data/world
       - ./minecraft/lobby/server.properties:/data/server.properties
-      - ./minecraft/lobby/paper-global.yml:/config/paper-global.yml
       - ./minecraft/lobby/spigot.yml:/data/spigot.yml
     restart: always
 
