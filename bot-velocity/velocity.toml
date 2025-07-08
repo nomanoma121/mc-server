@@ -10,7 +10,7 @@ online-mode = false
 ping-passthrough = 'DISABLED'
 player-info-forwarding-mode = 'modern'
 prevent-client-proxy-connections = false
-show-max-players = 20
+show-max-players = 500
 try = ['lobby']
 
 [advanced]
