@@ -23,9 +23,6 @@ services:
             - ./large/world:/data/world
             - ./large/mods:/data/mods
             - ./large/config:/data/config
-        environment:
-            MODPACK_PLATFORM: MODRINTH
-            MODRINTH_MODPACK: https://cdn.modrinth.com/data/vDyrHl8l/versions/jfiEc2mQ/proxy-compatible-forge-1.1.7.jar
         networks:
             - home-network
         restart: always
