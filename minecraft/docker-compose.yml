@@ -34,7 +34,7 @@ services:
             dockerfile: Dockerfile
         volumes:
             - ./large-paper/server.properties:/data/server.properties
-            - ./large-paper/world:/data/world
+            - ./large-paper/data:/data/
             - ./large-paper/plugins:/data/plugins
             - ./large-paper/spigot.yml:/data/spigot.yml
         networks:
