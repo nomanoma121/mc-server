@@ -28,6 +28,20 @@ services:
         restart: always
         tty: true
         stdin_open: true
+    large-paper:
+        build:
+            context: ./large-paper
+            dockerfile: Dockerfile
+        volumes:
+            - ./large-paper/server.properties:/data/server.properties
+            - ./large-paper/world:/data/world
+            - ./large-paper/plugins:/data/plugins
+            - ./large-paper/spigot.yml:/data/spigot.yml
+        networks:
+            - home-network
+        restart: always
+        tty: true
+        stdin_open: true
 networks:
     home-network:
         external: true

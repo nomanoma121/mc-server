@@ -1,0 +1,26 @@
+messages:
+  whitelist: You are not whitelisted on this server!
+  unknown-command: Unknown command. Type "/help" for help.
+  server-full: The server is full!
+  outdated-client: Outdated client! Please use {0}
+  outdated-server: Outdated server! I'm still on {0}
+  restart: Server is restarting
+advancements:
+  disable-saving: false
+  disabled:
+  - minecraft:story/disabled
+settings:
+  timeout-time: 60
+  restart-on-crash: true
+  restart-script: ./start.sh
+  save-user-cache-on-stop-only: false
+  sample-count: 12
+  bungeecord: true
+  player-shuffle: 0
+  user-cache-size: 1000
+  moved-wrongly-threshold: 0.0625
+  moved-too-quickly-multiplier: 10.0
+  netty-threads: 4
+  attribute:
+    maxHealth:
+      max: 2048.0
