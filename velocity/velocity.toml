@@ -40,5 +40,5 @@ show-plugins = false
 
 [servers]
 forge = 'forge:25565'
-large = 'large:25565'
+large = 'large-paper:25565'
 lobby = 'lobby:25565'
