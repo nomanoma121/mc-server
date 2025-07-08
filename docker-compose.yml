@@ -113,7 +113,7 @@ services:
       - ./minecraft/lobby/world:/data/world
       - ./minecraft/lobby/server.properties:/data/server.properties
       - ./minecraft/lobby/whitelist.json:/data/whitelist.json
-      - ./minecraft/lobby/spigot.yml:/data/spigot.yml
+      - ./minecraft/lobby/paper-global.yml:/data/paper-global.yml
     restart: always
 
 networks:
