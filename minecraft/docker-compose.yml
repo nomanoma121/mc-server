@@ -37,6 +37,8 @@ services:
             - ./large-paper/data:/data/
             - ./large-paper/plugins:/data/plugins
             - ./large-paper/spigot.yml:/data/spigot.yml
+            - ./large-paper/whitelist.json:/data/whitelist.json
+            - ./large-paper/ops.json:/data/ops.json
         networks:
             - home-network
         restart: always
