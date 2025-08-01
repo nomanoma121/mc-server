@@ -44,6 +44,20 @@ services:
         restart: always
         tty: true
         stdin_open: true
+    daimaru-tankentai:
+        build:
+            context: ./daimaru-tankentai
+            dockerfile: Dockerfile
+        volumes:
+            - ./daimaru-tankentai/server.properties:/data/server.properties
+            - ./daimaru-tankentai/world:/data/world
+            - ./daimaru-tankentai/mods:/data/mods
+            - ./daimaru-tankentai/config:/data/config
+        networks:
+            - home-network
+        restart: always
+        tty: true
+        stdin_open: true
 networks:
     home-network:
         external: true

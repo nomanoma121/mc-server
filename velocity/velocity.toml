@@ -42,3 +42,4 @@ show-plugins = false
 forge = 'forge:25565'
 large = 'large-paper:25565'
 lobby = 'lobby:25565'
+daimaru-tankentai = 'daimaru-tankentai:25565'
